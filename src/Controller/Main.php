@@ -8,11 +8,11 @@
 
 namespace App\Controller;
 
-
+use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use GuzzleHttp\Client;
 
 class Main extends AbstractController
 {
@@ -28,10 +28,10 @@ class Main extends AbstractController
      */
     public function main()  {
 
-        // todo: obv need to abstract $_POST
-        // todo: also need to handle all this in other method
-        $this->type = 'pokemon';//$_POST['type'];
-        $this->query = 'mewtwo';//$_POST['query'];
+        $request = Request::createFromGlobals();
+
+        $this->type = $request->get('type');
+        $this->query = $request->get('query');
         $this->client = new Client(['base_uri' => self::POKEAPI_BASE]);
 
         try {
@@ -43,11 +43,19 @@ class Main extends AbstractController
             $responseArr = json_decode($response->getBody(), true);
 
             echo '<pre>';
-            return new Response($response->getBody());
+            //return new Response($response->getBody());
 
+            return $this->render('pokemon.html.twig', $responseArr);
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             return new Response($e->getMessage());
         }
 
     }
+
+
+    public function pokemon(){}
+
+    public function type(){}
+
+    public function ability(){}
 }

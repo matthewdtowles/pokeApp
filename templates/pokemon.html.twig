@@ -1,0 +1,52 @@
+{#{% extends 'base.html.twig' %}#}
+{% block body %}
+<form action="" method="post">
+    <select name="type">
+        <option value="pokemon">pokemon</option>
+        <option value="type">type</option>
+        <option value="ability">ability</option>
+    </select>
+    <input type="text" name="query">
+    <button type="submit">Go!</button>
+</form>
+{% if name is defined and name is not empty %}
+<h1>{{ name }}</h1>
+{% endif %}
+
+<div>
+    {% if sprites is defined and sprites is not empty %}
+    {% for sprite in sprites %}
+    <img src="{{ sprite }}" />
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div>
+    {% if stats is defined and stats is not empty %}
+    <ul>
+        {% for stat in stats %}
+        <li>
+            <a href="{{ stat.stat.url }}">{{ stat.stat.name }}:</a>
+            {{ stat.base_stat }} (Effort: {{ stat.effort }})
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+<div>
+    {% if moves is defined and moves is not empty %}
+    <ul>
+        <h2>Moves</h2>
+        {% for m in moves %}
+        <li>
+            <a href="{{ m.move.url }}">{{ m.move.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
